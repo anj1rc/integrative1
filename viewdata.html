@@ -115,7 +115,6 @@
         </div>
       </div>
 
-      <!-- All Data Table -->
       <h2>📋 All Sensor Data</h2>
       <table>
         <thead>
@@ -133,7 +132,6 @@
         </tbody>
       </table>
 
-      <!-- Pagination -->
       <div class="pagination">
         <button id="prevPage" disabled>⬅ Previous</button>
         <span id="pageInfo">Page 1</span>
@@ -149,7 +147,7 @@
       let currentPage = 1;
       const itemsPerPage = 10;
 
-      // Fetch data from Firestore
+    
       async function fetchSensorData() {
         try {
           const response = await fetch(FIREBASE_URL);
@@ -159,8 +157,7 @@
             displayNoData();
             return;
           }
-
-          // Convert Firestore response to structured data
+          
           sensorData = result.documents.map((doc) => ({
             temperature:
               doc.fields.temperature?.doubleValue ||
@@ -176,12 +173,11 @@
               doc.fields.timestamp?.stringValue || new Date().toISOString(),
           }));
 
-          // Sort by timestamp (latest first)
+        
           sensorData.sort(
             (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
           );
 
-          // Display latest data
           displayLatestData();
           updateTable();
         } catch (error) {
@@ -189,8 +185,7 @@
           displayError();
         }
       }
-
-      // Display latest data
+      
       function displayLatestData() {
         const latestData = sensorData[0];
         document.getElementById("daylight").innerText = latestData.daylight;
@@ -202,7 +197,6 @@
         );
       }
 
-      // Update the table with paginated data
       function updateTable() {
         const tableBody = document.getElementById("data-table");
         tableBody.innerHTML = "";
@@ -234,7 +228,6 @@
           endIndex >= sensorData.length;
       }
 
-      // Format timestamp
       function formatTimestamp(timestamp) {
         return new Date(timestamp).toLocaleString("en-US", {
           year: "numeric",
@@ -246,7 +239,6 @@
         });
       }
 
-      // Display no data message
       function displayNoData() {
         document.getElementById("daylight").innerText = "No data";
         document.getElementById("temperature").innerText = "No data";
@@ -256,7 +248,6 @@
           "<tr><td colspan='4'>No data available</td></tr>";
       }
 
-      // Display error message
       function displayError() {
         document.getElementById("daylight").innerText = "Error";
         document.getElementById("temperature").innerText = "Error";
@@ -266,7 +257,6 @@
           "<tr><td colspan='4'>Error loading data</td></tr>";
       }
 
-      // Pagination event listeners
       document.getElementById("prevPage").addEventListener("click", () => {
         if (currentPage > 1) {
           currentPage--;
@@ -280,10 +270,8 @@
           updateTable();
         }
       });
-
-      // Fetch data on page load and refresh every 5 seconds
       fetchSensorData();
-      setInterval(fetchSensorData, 5000); // Refresh every 5 seconds
+      setInterval(fetchSensorData, 5000); 
     </script>
   </body>
 </html>
